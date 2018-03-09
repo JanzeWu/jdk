@@ -2,14 +2,14 @@
 # 并发
 达到某个状态后，等待线程再继续往下执行。可以用闭锁（Latch）或者栅栏（CyclicBarrier）
 
-##闭锁 CountDownLatch
+## 闭锁 CountDownLatch
 内部计数器原子操作(compareAndSet)减到0，唤醒等待线程。
 
 
-###数据结构
+### 数据结构
 计数器 + 线程等待双向队列
 
-###使用场景
+### 使用场景
 ```java
 /**
  * 闭锁CountDownLatch在多线程同步并发执行中使用。
@@ -56,7 +56,7 @@ class Player implements Runnable{
 }
 ```
 
-###实现原理
+### 实现原理
 调用CountDownLatch.await()的线程，并尝试获取共享锁，如果成功获取返回当前线程继续执行，否则将当前线程加入等待队列，检查等待队列头结点是否可以获取共享锁，如果可以则唤醒头结点对应的线程，否则阻塞当前线程LockSupport.park()，直到被唤醒。
 
 调用CountDownLatch.countDown()的线程，递减CountDownLatch实例的计数器，尝试释放共享锁（检查是否countDown到0），如果尝试成功，则释放共享锁，从线程等待队列第一个线程开始依次唤醒LockSupport.unpark()所有线程，自身线程继续执行。如果尝试释放线程失败，自身线程继续执行。
@@ -66,7 +66,7 @@ class Player implements Runnable{
 
 
 
-###释放
+### 释放
 ```java
 /**
  * await() 实际调用AQS中的acquireSharedInterruptibly方法
@@ -217,7 +217,7 @@ private void doReleaseShared() {
 计数器等于0时，lock.newCondition().signalAll()
 
 
-###使用场景
+### 使用场景
 ```java
 
 /**
