@@ -240,7 +240,9 @@ private void unparkSuccessor(Node node) {
     if (s != null)
         LockSupport.unpark(s.thread);
 }
-
+/**
+ * “共享锁”可用的条件，就是“锁计数器”的值为0！
+ */
 protected int tryAcquireShared(int acquires) {
             return (getState() == 0) ? 1 : -1;
 }
