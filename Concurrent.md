@@ -29,10 +29,10 @@ public class TestCountDownLatch {
             ts.add(t);
             t.start();
         }
-
-        for(Thread t : ts){
-            t.join();
-        }
+     
+        
+        // 阻塞线程，直到countDown = 0
+        downLatch.await();
     }
 }
 
@@ -48,8 +48,6 @@ class Player implements Runnable{
         try {
             System.out.println(Thread.currentThread() + " I am ready!");
             downLatch.countDown();
-            // 阻塞线程，直到countDown = 0
-            downLatch.await();
             System.out.println(Thread.currentThread() + " I am done!");
         }catch (Exception e){
             e.printStackTrace();
